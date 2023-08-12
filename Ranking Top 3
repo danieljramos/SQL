@@ -1,0 +1,21 @@
+WITH windows
+     AS (SELECT Count(DISTINCT( users )) AS sales,
+                ip_country,
+                Rank()
+                  OVER(
+                    ORDER BY ip_country)             AS rank,
+                Row_number ()
+                  OVER (
+                    ORDER BY ip_country),
+                Dense_rank()
+                  OVER(
+                    ORDER BY ip_country)
+         FROM   product
+             
+         GROUP  BY ip_country
+         ORDER  BY rank ASC)
+SELECT ip_country,
+       rank,
+       sales
+FROM   windows
+WHERE  rank <= 3 
