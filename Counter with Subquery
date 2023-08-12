@@ -1,0 +1,3 @@
+Select 
+sum(salary) from 
+(select emp_no, count(salary) as counter, sum(salary) as salary from salaries group by emp_no) as count where counter > 2
