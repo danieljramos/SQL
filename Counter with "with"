@@ -1,0 +1,5 @@
+with count as (select emp_no, count(salary) as counter from salaries group by emp_no)
+select
+sum(salary) from salaries left join count on salaries.emp_no = count.emp_no
+where
+counter > 2
