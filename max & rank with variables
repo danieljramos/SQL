@@ -1,0 +1,22 @@
+WITH max_salary AS (
+    SELECT DISTINCT emp_no, MAX(salary) OVER (PARTITION BY emp_no) AS max_salary
+    FROM salaries
+),
+ranking AS (
+    SELECT
+        max_salary.emp_no AS emp_no,
+        max_salary.max_salary AS max_salary,
+        titles.title AS title,
+        RANK() OVER (PARTITION BY titles.title ORDER BY max_salary DESC) AS ranking
+    FROM max_salary
+    LEFT JOIN titles ON max_salary.emp_no = titles.emp_no
+    WHERE titles.title = 'Senior Engineer'
+)
+SELECT
+    employees.first_name,
+    employees.last_name,
+    ranking.max_salary,
+    ranking.ranking,
+    ranking.title
+FROM ranking
+LEFT JOIN employees ON employees.emp_no = ranking.emp_no;
