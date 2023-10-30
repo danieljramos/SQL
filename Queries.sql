@@ -1,10 +1,10 @@
-How would you use a subquery to find the total number of orders placed by customers who have made a purchase more than once?
+-- 01 How would you use a subquery to find the total number of orders placed by customers who have made a purchase more than once?
 
 Select 
 sum(salary) from 
 (select emp_no, count(salary) as counter, sum(salary) as salary from salaries group by emp_no) as count where counter > 2
 
-/////
+/
 
 with count as (select emp_no, count(salary) as counter from salaries group by emp_no)
 
